@@ -5,7 +5,7 @@
 
     Inter-Process Communication (IPC):
     - Since processes do not share memory, they require different communication protocols to share data. Common IPC methods include:
-        1. Pipes: Unidirectional communication channels.
+        1. Pipes: Unidirectional communication channels such as Arrays, Value, etc.
         2. Queues: Thread- and process-safe FIFO data structures.
         3. Shared Memory: Allows multiple processes to access the same memory space, but requires synchronization mechanisms to avoid conflicts.
 
