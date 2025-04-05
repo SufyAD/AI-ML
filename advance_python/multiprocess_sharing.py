@@ -1,5 +1,8 @@
 """
-Sharing data with Array and Value
+Sharing data with Array, Value, and Queue
+Point to be noted here:
+- multiprocessing Queue: shares data in between different processes i.e multiprocessing.Process
+- data Queue: shared data in between different threads within a process i.e queue.Queue
 """
 import time
 import multiprocessing
