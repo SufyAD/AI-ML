@@ -11,8 +11,9 @@ def divide(a: float, b: float) -> float:
     """Return the quotient of a and b. Raises ValueError on division by zero."""
     return a / b
 
-def multiply(a: float, b: float) -> float:
-    """Return the product of a and b."""
+def multiply(a, b):
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        raise TypeError("Inputs must be numeric")
     return a * b
 
 def power(a: float, b: float) -> float:
