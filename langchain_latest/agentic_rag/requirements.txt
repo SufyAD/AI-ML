@@ -1,0 +1,14 @@
+wikipedia
+arxiv
+langchain_community
+langchain_google_genai
+faiss-cpu
+sentence_transformers 
+
+langchain_community 
+langchain_text_splitters 
+langchain_google_genai 
+langchain_huggingface 
+langchain_core 
+langchainhub 
+langchain_openai

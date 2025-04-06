@@ -1,0 +1,21 @@
+# Start Generation Here
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+*.log
+*.sqlite3
+*.db
+*.env
+*.venv
+*.pytest_cache/
+*.coverage
+*.mypy_cache/
+*.tox/
+*.coverage.*
+# End Generation Here
