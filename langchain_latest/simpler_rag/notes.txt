@@ -1,0 +1,16 @@
+RAG pipeline
+1. Load Source Data
+    - Transform 
+    - Embed
+2. Vector DB
+    - 
+
+## Stage #1: Data Ingestion/Load Stage 
+Data ingestion is the process of `extracting`, `transforming` (if needed), and loading data into a storage system (e.g., databases, data lakes, warehouses). It can be batch (processed in intervals) or streaming (real-time).
+    - Load from txt
+    - Load from pdf
+    - Load from website
+
+## Stage #2: Transform Stage 
+Take an entire document and then divide them into `chunks` before embed
+
