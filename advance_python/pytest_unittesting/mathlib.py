@@ -19,3 +19,6 @@ def multiply(a, b):
 def power(a: float, b: float) -> float:
     """Return a raised to the power of b."""
     return a ** b
+
+def square(a: float) -> float:
+    return a*a

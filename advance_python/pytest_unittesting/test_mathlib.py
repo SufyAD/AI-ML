@@ -38,7 +38,18 @@ def test_divide():
     
 def test_power():
     assert mathlib.power(2, 4) == 16
-
-
+    
+# parametrized testing with pytest parameter feature
+@pytest.mark.parametrize("input_val, expected_val", 
+[
+    (2, 4),
+    (3, 9),
+    (4, 16),
+    (5, 25),
+    (-3, 9),
+    (-4, 16),
+])
+def test_square(input_val, expected_val):
+    assert mathlib.square(input_val) == expected_val  # if not true Fail
 
 
