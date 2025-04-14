@@ -14,7 +14,7 @@ class HashMap():
             h += ord(char) # this will return the HEX code of char
         return h % self.MAX
     
-    # TODO: update this
+    # collision avoidance using chaining
     def __setitem__(self, key, value):
         h = self.get_hash(key)
         for idx, element in enumerate(self.arr[h]):
