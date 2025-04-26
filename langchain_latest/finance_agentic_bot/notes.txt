@@ -1,0 +1,4 @@
+1. Data ingestion -> Different Data Loaders (APIs) from langchain
+2. Embedding -> Text splitting before Embedding
+3. Vector DB -> pushing the data to the vector DB (such as we are using FAISS in our case)
+    - FAISS - it's a lightweight vevtor db, it's a library for efficient similarity search and clustering of dense vectors. (watch video)
