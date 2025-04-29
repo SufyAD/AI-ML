@@ -1,13 +1,12 @@
 import os
 from dotenv import load_dotenv
-from time import time
+import time
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain.chains import RetrievalQAWithSourcesChain
-from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import UnstructuredURLLoader
-from langchain.vectorstores import FAISS
+from langchain.chains.qa_with_sources.retrieval import RetrievalQAWithSourcesChain
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain_community.vectorstores import FAISS
 
 load_dotenv()
 
@@ -58,37 +57,53 @@ if process_urls and urls:
         vector_store = FAISS.from_documents(docs, embeddings)
 
         # Step 4: Create retriever
-        time.sleep(3)
         main_placeholder.text("Creating retriever from vector store...")
         retriever = vector_store.as_retriever()
+        # After creating retriever
+        st.session_state.retriever = retriever
+        time.sleep(3)
 
         main_placeholder.success("Processing complete! ✅")
+        time.sleep(5)
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
     
     
+
 # Input query
 query = main_placeholder.text_input("Ask a question based on the articles:")
+# creating a btn and spinner
+is_submit = st.button("Submit")
 
-if query:
-    # Build QA chain using retriever
-    chain = RetrievalQAWithSourcesChain.from_llm(llm=llm, retriever=retriever)
-    result = chain({"question": query}, return_only_outputs=True)
+if is_submit:
+    if 'retriever' in st.session_state: 
+        try:
+            with st.spinner("Processing query..."):
+                # Build QA chain using retriever
+                chain = RetrievalQAWithSourcesChain.from_llm(
+                    llm=llm, 
+                    retriever=st.session_state.retriever # quick fix for retriever issue (to be used in the next state)
+                    ) 
+                result = chain({"question": query}, return_only_outputs=True)
 
-    # Display answer
-    st.header("Answer")
-    # result will be a dictionary of this format --> {"answer": "", "sources": [] }
-    st.write(result['answer'])
+            # Display answer
+            st.header("Answer")
+            # result will be a dictionary of this format --> {"answer": "", "sources": [] }
+            st.write(result['answer'])
 
-    # Optionally show sources
-    show_sources = st.checkbox("Show sources")
-    if show_sources:
-        sources = result.get("sources", "")
-        if sources.strip():
-            st.subheader("Sources:")
-            for src in sources.strip().split("\n"):
-                st.write(f"- {src}")
-        else:
-            st.info("No sources found.")
-            
+            # Optionally show sources
+            show_sources = st.checkbox("Show sources")
+            if show_sources:
+                sources = result.get("sources", "")
+                if sources:
+                    st.subheader("Sources:")
+                    for src in sources.split("\n"):
+                        st.write(f"- {src}")
+                else:
+                    st.info("No sources found.")
+        except Exception as e:
+            st.error(f"An error occurred while processing: {e}")
+    else:
+        st.warning("Please process URLs first to initialize retriever.")
+                
