@@ -87,21 +87,18 @@ if is_submit:
                     ) 
                 result = chain({"question": query}, return_only_outputs=True)
 
-            # Display answer
-            st.header("Answer")
             # result will be a dictionary of this format --> {"answer": "", "sources": [] }
+            st.header("We Got You!")
             st.write(result['answer'])
 
-            # Optionally show sources
-            show_sources = st.checkbox("Show sources")
-            if show_sources:
-                sources = result.get("sources", "")
-                if sources:
-                    st.subheader("Sources:")
-                    for src in sources.split("\n"):
-                        st.write(f"- {src}")
-                else:
-                    st.info("No sources found.")
+            sources = result.get("sources", "")
+            if sources:
+                st.subheader("Sources:")
+                for src in sources.split("\n"):
+                    st.write(f"- {src}")
+            else:
+                st.info("No sources found.")
+                
         except Exception as e:
             st.error(f"An error occurred while processing: {e}")
     else:
