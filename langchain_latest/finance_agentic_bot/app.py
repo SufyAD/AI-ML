@@ -13,6 +13,21 @@ load_dotenv()
 ### Important API keys for our lLM
 api = os.getenv('GOOGLE_API_KEY')
 
+if 'theme' not in st.session_state:
+    st.session_state.theme = 'light'
+
+if st.button("🌗 Toggle Theme"):
+    st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
+
+if st.session_state.theme =='light':
+    pass
+else:
+    st._config.set_option(f'theme.backgroundColor' ,"white" )
+    st._config.set_option(f'theme.base' ,"light" )
+    st._config.set_option(f'theme.primaryColor' ,"#f55591" )
+    st._config.set_option(f'theme.secondaryBackgroundColor' ,"#EF5350" )
+    st._config.set_option(f'theme.textColor' ,"#0a1464")
+
 # Streamlit UI setup
 st.title("Agentic Finance Bot with Langchain Retrieval")
 st.sidebar.title("Enter News Article URLs")
@@ -75,7 +90,6 @@ if process_urls and urls:
 query = main_placeholder.text_input("Ask a question based on the articles:")
 # creating a btn and spinner
 is_submit = st.button("Submit")
-
 if is_submit:
     if 'retriever' in st.session_state: 
         try:
@@ -98,7 +112,7 @@ if is_submit:
                     st.write(f"- {src}")
             else:
                 st.info("No sources found.")
-                
+
         except Exception as e:
             st.error(f"An error occurred while processing: {e}")
     else:
