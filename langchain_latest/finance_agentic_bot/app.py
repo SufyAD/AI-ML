@@ -61,10 +61,10 @@ if process_urls and urls:
         retriever = vector_store.as_retriever()
         # After creating retriever
         st.session_state.retriever = retriever
-        time.sleep(3)
+        time.sleep(2)
 
         main_placeholder.success("Processing complete! ✅")
-        time.sleep(5)
+        time.sleep(2)
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
