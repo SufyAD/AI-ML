@@ -12,28 +12,50 @@ async def get():
         "status": "ok"
     }
 
-@app.post("/webhook")
+@app.post("/")
 async def dialogflow_webhook(request: Request):
-    payload = await request.json()
+    try:
+        payload = await request.json()
+        
+        intent = payload['queryResult']['action']
+        param  = payload['queryResult']['parameters']
     
-    intent        = payload['queryResult']['action']
-    param         = payload['queryResult']['parameter']
- 
-    if intent == "order.track":
-        order_id   = param.get('order_id')
-        return await track_order(order_id)
-    
-    return JSONResponse(content={"fulfillmentText": "Intent not handled."})
+        if intent == "order.track":
+            order_id   = param.get('order_id')
+            return await order_track(order_id)
+        
+        return JSONResponse(content={"fulfillmentText": "Intent not handled."})
+    except Exception as e:
+        print(f"Webhook error: {e}")
+        return JSONResponse(status_code=500, content={"error": str(e)})
         
         
-async def track_order(order_id: str|int):
-    order = track_order_by_id(order_id)
-    if order:
-        message = f"Order {order['order_id']} is currently {order['status']}."
-    else:
-        message = "Sorry, we couldn't find your order."
+        
+async def order_track(order_id: str|int):
+    # order = track_order_by_id(order_id)
+    # if order:
+    #     message = f"Order {order['order_id']} is currently {order['status']}."
+    # else:
+    #     message = "Sorry, we couldn't find your order."
 
     return JSONResponse(content={
-        "fulfillmentText": message
+        "fulfillmentText": "HUrray OKAAaaaaaaaaaaaaay"
     })
+    
+    
+async def order_add(param: dict):
+    return {
+        "fulfillmentText": "Order added"
+    }
+    
+async def order_cancel(param: dict):
+     return {
+        "fulfillmentText": "Order Cancelled"
+    }
+     
+     
+
+
+
+    
     
