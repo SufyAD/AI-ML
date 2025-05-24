@@ -1,21 +1,16 @@
 [project]
-name = "advance-python"
+name = "streamlit-ui"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pytest>=8.3.5",
+    "pandas>=2.2.3",
     "streamlit>=1.45.1",
 ]
 
 [dependency-groups]
 dev = [
-    "ipykernel>=6.29.5",
-    "uv>=0.7.8",
-]
-
-[tool.uv.workspace]
-members = [
-    "streamlit_ui",
+    "numpy>=2.2.6",
+    "scikit-learn>=1.6.1",
 ]
