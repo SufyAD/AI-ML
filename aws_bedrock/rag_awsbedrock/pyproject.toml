@@ -1,0 +1,16 @@
+[project]
+name = "rag-awsbedrock"
+version = "0.1.0"
+description = "AWS Bedrock Practice RAG Project by Sufyan Ahmed"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "awscli>=1.40.7",
+    "boto3>=1.38.8",
+    "faiss-cpu>=1.11.0",
+    "langchain>=0.3.25",
+    "langchain-aws>=0.2.22",
+    "langchain-community>=0.3.23",
+    "langchain-text-splitters>=0.3.8",
+    "streamlit>=1.45.0",
+]
