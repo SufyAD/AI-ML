@@ -1,52 +1,70 @@
 import pytest
 import mysql.connector
-from db_conn import get_db_cursor, get_db_conn
+from db_conn import get_db_conn
+
+# app.py
+
+def insert_order_item(conn, gym_item, quantity) -> int:
+    try:
+        order_id = 0 # output
+        cursor = conn.cursor()
+        cursor.callproc('insert_order_item', (gym_item, quantity, order_id))
+        conn.commit()
+        cursor.close()
+        
+        return order_id 
+
+    except Exception as e:
+        print(f"Insert error: {e}")
+        conn.rollback()
+        return -1
 
 
-@pytest.fixture(scope="function")
+def get_total_order_price(conn, order_id):
+    try:
+        cursor = conn.cursor()
+        query = f"SELECT get_total_order_price({order_id})"
+        cursor.execute(query)
+        result = cursor.fetchone()[0]
+        cursor.close()
+        print("****************")
+        return result
+    except Exception as e:
+        print(f"Total price error: {e}")
+        return -1
+ 
+    
+        
+@pytest.fixture
 def db_connection():
-    """
-    Establishes a fresh database connection for each test function
-    and cleans up any test data.
-    """
     conn = get_db_conn()
-    cursor = conn.cursor()
-
-    yield conn, cursor
-
-    cursor.close()
+    yield conn
     conn.close()
 
-# Fixture to provide a clean database connection for each test
-def test_insert_order(db_connection):
-    """
-    Tests inserting a new order into the database.
-    """
-    conn, cursor = db_connection
-    # order_id = 1203 # default increment
-    order_id = 12312
-    item_id  = 123
-    quantity = 3
-    total_price = 4000.00
+# def test_insert_order_item(db_connection):
+#     conn = db_connection
+#     gym_item = "bands"
+#     quantity = 2
+#     order_id = insert_order_item(conn, gym_item, quantity)
+#     print(f"Order id is {order_id}")
+#     assert order_id != -1
+#     assert isinstance(order_id, int)
 
-    insert_query = """
-    INSERT INTO orders (order_id, item_id, quantity, total_price)
-    VALUES (%d, %d, %d, %f);
-    """
-    try:
-        cursor.execute(insert_query, (item_id, quantity, total_price))
-        conn.commit()
+def test_get_total_order_price(db_connection):
+    conn = db_connection
+    test_items = [
+        ("bands", 2),
+        ("yoga mat", 3),
+        ("shirt", 3),
+        ("dumbell", 3),
+        ("gym belt", 10),
+        ("resistance bands", 100)]
+    
+    for item, qty in test_items:
+        order_id  = insert_order_item(conn, item, qty)
+        print(order_id)
+        total_price = get_total_order_price(conn, order_id)
         
-        cursor.execute("SELECT * FROM orders WHERE order_id = %d;", (order_id,))
-        result = cursor.fetchone()
-
-        assert result is not None
-        assert result[0] == order_id
-        assert result[1] == item_id
-        assert result[2] == quantity
-        assert abs(float(result[3]) - total_price) < 0.001 # total_price is the fourth column, careful with float comparison
-
-    except mysql.connector.Error as err:
-        pytest.fail(f"Database error during insert test: {err}")
-        
-
+        assert order_id != -1
+        assert isinstance(order_id, int)
+        assert total_price > 0
