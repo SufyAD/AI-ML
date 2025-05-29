@@ -1,0 +1,5 @@
+1. We need to run the FastAPI backend to interact with out Dialogflow chatbot
+2. How many endpoints do we need?
+    - connection to db
+    - extract data from db w.r.t the OrderID
+    - 

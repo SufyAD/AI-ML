@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# Virtual Environment
+venv/
+env/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Uvicorn reload
+*.reload
+
+# Pytest cache
+.pytest_cache/
+
+# Database dumps
+*.sql
