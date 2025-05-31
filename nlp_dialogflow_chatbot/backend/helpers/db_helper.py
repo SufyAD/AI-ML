@@ -40,14 +40,16 @@ def insert_order_item(gym_item: str, quantity: int):
             cursor.execute("CALL pandeyji_eatery.insert_order_item(%s, %s, @p_order_id)", (gym_item, quantity))
             cursor.execute("SELECT @p_order_id")
             
+            
             order_id = cursor.fetchone()[0] # get order_id from the callproc            
+            print(order_id)
             insert_order_tracking(order_id, "in-progress") # add tracking by-default
             cnx.commit()
             
             return order_id
         
     except mysql.connector.Error as err:
-        print(f"MySQL Error: {err}")
+        print(f"Insert Order Error: {err}")
     except Exception as e:
         print(f"Unexpected error: {e}")
     
@@ -64,13 +66,12 @@ def insert_order_tracking(order_id: int, status: str):
     cnx.commit()
     cursor.close()
 
-def get_total_order_price(order_id):
+def get_total_order_price(order_id: int):
     cursor = cnx.cursor()
 
     # Executing the SQL query to get the total order price
     query = f"SELECT get_total_order_price({order_id})"
     cursor.execute(query)
-
     price = cursor.fetchone()[0]
     cursor.close()
 
@@ -80,12 +81,12 @@ def get_total_order_price(order_id):
 def get_order_status(order_id: int):
     try:
         with cnx.cursor() as cursor:
-            query = "SELECT status FROM order_tracking WHERE order_id = %s"
-            cursor.execute(query, (order_id,))
+            query = f"SELECT status FROM order_tracking WHERE order_id={order_id}"
+            cursor.execute(query)
             result = cursor.fetchone()
             return result[0] if result else None
     except mysql.connector.Error as err:
-        print(f"MySQL Error: {err}")
+        print(f"Get Order Status Error: {err}")
         return None
 
 
@@ -98,6 +99,6 @@ if __name__ == "__main__":
     # print(get_total_order_price(1234))
     # insert_order_item('Pav Bhaji', 1, 99)
     #  print(get_next_order_id())insert_order_tracking(99, "in progress")
-    print(get_order_status(123124))
+    print(get_order_status(41))
     #
     pass
