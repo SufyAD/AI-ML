@@ -1,0 +1,20 @@
+[project]
+name = "vector_database_pinecone"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "langchain>=0.3.25",
+    "langchain-text-splitters>=0.3.8",
+    "pinecone>=7.0.2",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5"
+    ]
+
+[tool.uv.sources]
+vector_database_pinecone = { workspace = true }
